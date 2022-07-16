@@ -33,5 +33,8 @@ __"Mesto Russia"__ - это сервис, посвященный путешес�
 
 ___  
 ## III.Ссылка на GitHub Pages:
- https://maxdee1489.github.io/russian-travel/index.html
+https://maxdee1489.github.io/mesto/
+
+
+
  
