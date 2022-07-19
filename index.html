@@ -10,7 +10,6 @@
 <body class="page">
   <header class="header page__header">
     <img src="./images/logo.svg" alt="логотип Место" class="header__logo">
-    <div class="header__line"></div>
   </header>
   <main class="content page__content">
     <section class="profile content__profile">
@@ -18,8 +17,8 @@
         <img src="./images/image.jpg" alt="аватар Кусто" class="profile__avatar">
         <div class="profile__info">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
-          <p class="profile__amplua">Исследователь океана</p>
           <button type="button" aria-label="edit" class="profile__edit-button"></button>
+          <p class="profile__amplua">Исследователь океана</p>
         </div>
       </div>
       <button type="button" aria-label="add" class="profile__add-button"></button>
@@ -77,9 +76,9 @@
       <button type="button" aria-label="close" class="popup__close"></button>
       <div class="popup__content">
         <h2 class="popup__title">Редактировать профиль</h2>
-        <form class="popup__info">
-          <input id="name" type="text" class="popup__input">
-          <input id="amplua" type="text" class="popup__input">
+        <form class="popup__info" name="editForm">
+          <input id="name" type="text" class="popup__input" name="nameForm">
+          <input id="amplua" type="text" class="popup__input" name="ampluaForm">
           <button class="popup__save-button">Сохранить</button>
         </form>
       </div>

@@ -9,7 +9,8 @@ const openPopup = function() {
 
 const closePopup = function() {
   popupElement.classList.remove('popup_is-opened');
-  addInfo();
+  name.value = profileName.textContent;
+  amplua.value = profileAmplua.textContent;
 };
 
 popupOpenButton.addEventListener('click', openPopup);
@@ -20,11 +21,10 @@ popupCloseButton.addEventListener('click', closePopup);
 const profileElement = document.querySelector('.profile');
 const profileName = profileElement.querySelector('.profile__name');
 const profileAmplua = profileElement.querySelector('.profile__amplua');
+let name = document.getElementById('name');
+let amplua = document.getElementById('amplua');
 
 const addInfo = function() {
-  let name = document.getElementById('name');
-  let amplua = document.getElementById('amplua');
-  
   name.value = profileName.textContent;
   amplua.value = profileAmplua.textContent;
 };
@@ -53,12 +53,13 @@ function formSubmitHandler (evt) {
     profileAmplua.textContent = job;
 
     //Закрытие Popup
-    popupElement.classList.remove('popup_is-opened'); 
+    closePopup();
 }
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 formElement.addEventListener('submit', formSubmitHandler);
+
 
 
 
