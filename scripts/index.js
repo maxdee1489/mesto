@@ -5,12 +5,11 @@ const popupOpenButton = document.querySelector('.profile__edit-button');
 
 const openPopup = function() {
   popupElement.classList.add('popup_is-opened');
+  addInfo();
 };
 
 const closePopup = function() {
   popupElement.classList.remove('popup_is-opened');
-  name.value = profileName.textContent;
-  amplua.value = profileAmplua.textContent;
 };
 
 popupOpenButton.addEventListener('click', openPopup);
@@ -28,8 +27,6 @@ const addInfo = function() {
   name.value = profileName.textContent;
   amplua.value = profileAmplua.textContent;
 };
-
-addInfo();
 
 
 //3.Редактирование имени и информации
