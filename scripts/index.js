@@ -1,70 +1,135 @@
 // I.Popup редактирования профиля
 
 // 1.Открытие и закрытие Popup
-const popupElement = document.querySelector('.popup');
-const popupCloseButton = popupElement.querySelector('.popup__close');
+const popupEditProfile = document.getElementById('editProfile');
+const popupCloseButton = popupEditProfile.querySelector('.popup__close');
 const popupOpenButton = document.querySelector('.profile__edit-button');
 
-const openPopup = function() {
-  popupElement.classList.add('popup_is-opened');
-  addInfo();
+// напишем общую функцию для открытия попапов
+function openPopup(popup) {
+  popup.classList.add('popup_is-opened'); 
 };
 
-const closePopup = function() {
-  popupElement.classList.remove('popup_is-opened');
+// напишем общую функцию для закрытия попапов
+function closePopup(popup) {
+  popup.classList.remove('popup_is-opened'); 
 };
 
-popupOpenButton.addEventListener('click', openPopup);
-popupCloseButton.addEventListener('click', closePopup);
+// напишем функцию для закрытия попапа редактирования профиля
+const closePopupEditProfile = function () {
+  closePopup(popupEditProfile)
+};
+
+// добавим событие - открытие Popup при клике на кнопку
+popupOpenButton.addEventListener('click', () => {
+  openPopup(popupEditProfile)
+});
+
+// добавим событие - закрытие Popup при клике на кнопку
+popupCloseButton.addEventListener('click',closePopupEditProfile);
 
 
 // 2.Значения в полях ввода при открытии Popup
 const profileElement = document.querySelector('.profile');
 const profileName = profileElement.querySelector('.profile__name');
 const profileAmplua = profileElement.querySelector('.profile__amplua');
-let name = document.getElementById('name');
-let amplua = document.getElementById('amplua');
+// Находим поля формы в DOM
+const nameInputProfilePopup = document.getElementById('name');
+const ampluaInputProfilePopup = document.getElementById('amplua');
 
-const addInfo = function() {
-  name.value = profileName.textContent;
-  amplua.value = profileAmplua.textContent;
+const addInfoInputsProfilePopup = function() {
+  nameInputProfilePopup.value = profileName.textContent;
+  ampluaInputProfilePopup.value = profileAmplua.textContent;
 };
 
+// настроим запуск функции наполнения полей ввода при нажатии на кнопку открытия попап
+popupOpenButton.addEventListener('click', addInfoInputsProfilePopup);
 
 //3.Редактирование имени и информации
 
 // Находим форму в DOM
-let formElement = document.querySelector('.popup__info');
-// Находим поля формы в DOM
-let nameInput = document.getElementById('name');
-let jobInput = document.getElementById('amplua');
+const formEditProfilePopup = document.querySelector('.popup__info');
 
 // Обработчик «отправки» формы
-function formSubmitHandler (evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+function submitEditProfileForm (evt) {
+  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
                                                 
-    // Получаем значение полей jobInput и nameInput из свойства value
-    let name = nameInput.value;
-    let job = jobInput.value;
+  // Получаем значение полей jobInput и nameInput из свойства value
+  const name = nameInputProfilePopup.value;
+  const job = ampluaInputProfilePopup.value;
 
-    // Вставляем новые значения с помощью textContent
-    profileName.textContent = name; 
-    profileAmplua.textContent = job;
+  // Вставляем новые значения с помощью textContent
+  profileName.textContent = name; 
+  profileAmplua.textContent = job;
 
-    //Закрытие Popup
-    closePopup();
+  // Закрытие попапа
+  closePopupEditProfile();
 }
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
-formElement.addEventListener('submit', formSubmitHandler);
+formEditProfilePopup.addEventListener('submit', submitEditProfileForm);
 
 
 // II.Практическая работа №5
 
-// 1.Добавление 6 карточек
+// напишем общую функцию для создания карточек из массива и попапа добавления карточек
+function createCard(nameCardValue, imageCardLink, altImageCardValue) {
+  // клонируем содержимое тега Template в переменную
+  const newPlaceCard = elementTemplate.querySelector('.element').cloneNode(true);
+  // выбираем фреймы карточки для вывода контента
+  const placeName = newPlaceCard.querySelector('.element__title');
+  const placeImage = newPlaceCard.querySelector('.element__image');
+  // Вставляем новые значения
+  placeName.textContent = nameCardValue;
+  placeImage.src = imageCardLink;
+  placeImage.alt = altImageCardValue;
+  // из шаблона выбираем кнопки
+  const trashButton = newPlaceCard.querySelector('.element__trash');
+  const likeButton = newPlaceCard.querySelector('.element__like-button');
+  const imageCard = newPlaceCard.querySelector('.element__image');
+  //добавляем на кнопки и фото слушатели
+  trashButton.addEventListener('click', deleteCard);
+  likeButton.addEventListener('click', () => {
+    likeCard(likeButton)
+  });
+  imageCard.addEventListener('click', () => {
+    openPopup(popupImage)
+  });
+  imageCard.addEventListener('click', fillingPopupImage);
+
+  //возвращаем готовую карточку
+  return newPlaceCard;
+
+}
+
+// 1.Добавление карточек
 
 const initialCards = [
+  {
+    name: 'Карачаевск',
+    link: "./images/kirill-pershin-1088404-unsplash.jpg"
+  },
+  {
+    name: 'Гора Эльбрус',
+    link: "./images/kirill-pershin-1404681-unsplash.jpg"
+  },
+  {
+    name: 'Домбай',
+    link: "./images/kirill-pershin-1556355-unsplash.jpg"
+  },
+  {
+    name: 'Гора Эльбрус',
+    link: "./images/kirill-pershin-1404681-unsplash.jpg"
+  },
+  {
+    name: 'Домбай',
+    link: "./images/kirill-pershin-1556355-unsplash.jpg"
+  },
+  {
+    name: 'Карачаево-Черкесия',
+    link: "./images/kirill-pershin-1088404-unsplash.jpg"
+  },
   {
     name: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
@@ -94,182 +159,126 @@ const initialCards = [
 // получаем содержимое тега Template
 const elementTemplate = document.querySelector('#element-template').content;
 // выбираем контейнер, куда будем добавлять карточки
-const elementsContainer = document.querySelector('.elements');
- 
+const cardsContainer = document.querySelector('.elements');
+
 // напишем функцию для создания,наполнения карточек и добавления их в контейнер 
-function addInfoCards() {
-  initialCards.forEach(function(el) {
-    // клонируем содержимое тега Template в переменную
-    const Elements = elementTemplate.querySelector('.element').cloneNode(true); 
-    Elements.querySelector('.element__title').textContent = el.name;
-    Elements.querySelector('.element__image').src = el.link;
+function createInitialCards() {
+  initialCards.forEach(function(el) { 
+    
+    // передаем значения объектов массива в функцию создания карточек
+    const newCard = createCard(el.name, el.link, el.name);
+    
     // добавляем в контейнер
-    elementsContainer.prepend(Elements);
+    cardsContainer.prepend(newCard);
   });
 };
 
 // отображаем на странице
-addInfoCards();
+createInitialCards();
 
 
 // 2.Открытие и закрытие формы добавления карточек
 
 // выбираем нужный Popup
-const addCardElement = document.getElementById('addCard');
+const addCardPopup = document.getElementById('addCard');
 // выбираем кнопку открытия Popup
-const addCardOpenButton = document.querySelector('.profile__add-button');
+const addCardPopupOpenButton = document.querySelector('.profile__add-button');
 
 // выбираем кнопку закрытия Popup
-const addCardCloseButton = document.getElementById('addCardClose');
+const addCardPopupCloseButton = document.getElementById('addCardClose');
 
-// напишем функцию открытия Popup
-const openaddCard = function() {
-  addCardElement.classList.add('popup_is-opened');
-};
-
-// напишем функцию закрытия Popup
-const closeaddCard = function() {
-  addCardElement.classList.remove('popup_is-opened');
+// напишем функцию для закрытия попапа добавления карточки
+const closeAddCardPopup = function () {
+  closePopup(addCardPopup)
 };
 
 // добавим событие - открытие Popup при клике на кнопку
-addCardOpenButton.addEventListener('click', openaddCard);
+addCardPopupOpenButton.addEventListener('click', () => {
+  openPopup(addCardPopup)
+});
 
 // добавим событие - закрытие Popup при клике на кнопку
-addCardCloseButton.addEventListener('click', closeaddCard);
+addCardPopupCloseButton.addEventListener('click', closeAddCardPopup);
 
 
 // 3.Добавление карточки
 
 // Находим форму в DOM
-let addFormElement = addCardElement.querySelector('.popup__info');
+const formAddCardPopup = addCardPopup.querySelector('.popup__info');
 
 // Находим поля формы в DOM
-let placeInput = document.getElementById('placeName');
-let imageInput = document.getElementById('placeImage');
+const placeInput = document.getElementById('placeName');
+const imageInput = document.getElementById('placeImage');
 
 // Обработчик «отправки» формы
-function addFormSubmitHandler (evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-                                                
-    // Получаем значение полей placeInput и imageInput из свойства value
-    let name = placeInput.value;
-    let image = imageInput.value;
+function submitAddCardForm (evt) {
+  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
 
-   // клонируем содержимое тега Template в переменную
-   const Elements = elementTemplate.querySelector('.element').cloneNode(true);
+  // передаем значения из полей формы добавления карточек в функцию создания карточек
+  const newCard = createCard(placeInput.value, imageInput.value, placeInput.value);
 
-   // выбираем фреймы карточки для вывода контента
-   const placeName = Elements.querySelector('.element__title');
-   const placeImage = Elements.querySelector('.element__image');
-
-   // Вставляем новые значения с помощью textContent и src
-   placeName.textContent = name;
-   placeImage.src = image;
+  // добавляем в контейнер
+  cardsContainer.prepend(newCard);
    
-   // добавляем в контейнер
-   elementsContainer.prepend(Elements);
-   
-   // Закрытие Popup
-   closeaddCard();
+  // Закрытие Popup
+  closeAddCardPopup();
 
-   // очищаем поля  формы после отправки
-   placeInput.value = "";
-   imageInput.value = "";
+  // очищаем поля  формы после отправки
+  formAddCardPopup.reset();
 }
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
-addFormElement.addEventListener('submit', addFormSubmitHandler);
+formAddCardPopup.addEventListener('submit', submitAddCardForm);
 
 
 // 4.Лайк карточки
 
-// создадим массивоподобный объект из кнопок лайка 
-const likeElements = document.querySelectorAll('.element__like-button');
+// напишем функцию для добавления/удаления лайка при клике на кнопку 
+function likeCard(el) { 
+  el.classList.toggle('element__like-button_enabled');
+};
 
-// для каждого элемента массивоподобного объекта применим функцию
-likeElements.forEach(function(el) {
-  // напишем функцию для добавления/удаления лайка при клике на кнопку 
-  function likeCard() { 
-    el.classList.toggle('element__like-button_enabled');
-  };
-    
-  // добавим событие - клик по кнопке
-  el.addEventListener('click', likeCard);  
-});
-  
 
 // 5.Удаление карточки
 
-// создадим массивоподобный объект из кнопок удаления карточки
-const trashElementButton = document.querySelectorAll('.element__trash');
-
-trashElementButton.forEach(function(el) {
-  // добавим событие - клик по кнопке удаления
-  el.addEventListener('click', deleteCard);
-  
-  // напишем функцию удаления карточки
-  function deleteCard() {
-    // выберем элемент,который нужно удалить(это родительский элемент кнопки удаления, т.е. сама карточка)
-    let card = this.parentElement; 
-    // удаление элемента
-    card.remove();
-  };
-
-});
+// напишем функцию удаления карточки
+function deleteCard() {
+  // выберем элемент,который нужно удалить(это родительский элемент кнопки удаления, т.е. сама карточка)
+  const card = this.parentElement; 
+  // удаление элемента
+  card.remove();
+};
 
 
 // 6.Открытие попапа с картинкой
 
 // найдем попап 
-const popupImageElement = document.querySelector('.popup-image');
+const popupImage = document.getElementById('popupImage');
 // найдем кнопку закрытия попапа
-const popupImageCloseButton = popupImageElement.querySelector('.popup-image__close');
-// создадим массивоподобный объект из фотографий карточек
-const elementImage = document.querySelectorAll('.element__image');
+const popupImageCloseButton = popupImage.querySelector('.popup-image__close');
+// выбираем фреймы попапа, в которые будем передавать информацию из карточки
+const placeNamePopupImage = popupImage.querySelector('.popup-image__title');
+const placeImagePopupImage = popupImage.querySelector('.popup-image__image');
 
-// напишем функцию открытия попапа с картинкой
-
-elementImage.forEach(function(el) {
-  // добавим событие - клик по картинке
-  el.addEventListener('click', openPopupImage);
-  // напишем функцию открытия попапа
-  function openPopupImage() {
-    popupImageElement.classList.add('popup-image_is-opened');
-
-  };
-
-  // добавим событие - клик по кнопке закрытия
-  popupImageCloseButton.addEventListener('click', closePopupImage)
-  // напишем функцию закрытия попапа
-  function closePopupImage() {
-    popupImageElement.classList.remove('popup-image_is-opened');
-  };
+// добавим событие - клик по кнопке закрытия
+popupImageCloseButton.addEventListener('click', () => {
+  closePopup(popupImage)
 });
 
 
-// напишем функцию наполнения полей попапа релевантной информацией из карточки
-
-elementImage.forEach(function(el) {
-  // добавим событие - клик по картинке
-  el.addEventListener('click', fillingPopupImage);
-  
-  // напишем функцию заполнения попапа информацией из карточки
-  function fillingPopupImage() {
-    // укажем в переменной, что карточка - это родительский элемент по отношению к фото
-    let card = this.parentElement;
-    // выбираем поля карточки, из которых будем передавать информацию в попап
-    let nameCard = card.querySelector('.element__title');
-    let imageCard = card.querySelector('.element__image');
-    // выбираем фреймы попапа, в которые будем передавать информацию из карточки
-    const placeName = popupImageElement.querySelector('.popup-image__title');
-    const placeImage = popupImageElement.querySelector('.popup-image__image');
-    // вставляем новые значения с помощью textContent и src
-    placeName.textContent = nameCard.textContent;
-    placeImage.src = imageCard.src;    
-  };  
-});
+// напишем функцию заполнения попапа информацией из карточки
+function fillingPopupImage() {
+  // укажем в переменной, что карточка - это родительский элемент по отношению к фото
+  const card = this.parentElement;
+  // выбираем поля карточки, из которых будем передавать информацию в попап
+  const nameCard = card.querySelector('.element__title');
+  const imageCard = card.querySelector('.element__image');
+  // вставляем новые значения с помощью textContent и src
+  placeNamePopupImage.textContent = nameCard.textContent;
+  placeImagePopupImage.src = imageCard.src;
+  placeImagePopupImage.alt =  nameCard.textContent;  
+};
 
 
 
