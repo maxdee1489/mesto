@@ -2,14 +2,20 @@
   font-size: 42px;
   font-weight: 500;
   line-height: 48px;
-  text-align: center;
   max-width: 294px;
   margin: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  position:relative;
-  top: 12px;
+  position: relative;
+  top: 9px;
+  align-self: end;
+}
+
+@media screen and (max-width: 740px) {
+  .profile__name {
+    justify-self: center;
+  }
 }
 
 @media screen and (max-width: 540px) {
@@ -17,6 +23,7 @@
     font-size: 27px;
     line-height: 33px;
     top: 0px;
+    align-self: start;
     max-width: 200px;
   }
 }

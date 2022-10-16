@@ -89,18 +89,20 @@ function createCard(nameCardValue, imageCardLink, altImageCardValue) {
   const likeButton = newPlaceCard.querySelector('.element__like-button');
   const imageCard = newPlaceCard.querySelector('.element__image');
   //добавляем на кнопки и фото слушатели
-  trashButton.addEventListener('click', deleteCard);
+  trashButton.addEventListener('click', () => {
+    deleteCard(newPlaceCard)
+  });
   likeButton.addEventListener('click', () => {
     likeCard(likeButton)
   });
+  
   imageCard.addEventListener('click', () => {
-    openPopup(popupImage)
+    fillingPopupImage(newPlaceCard);
+    openPopup(popupImage);
   });
-  imageCard.addEventListener('click', fillingPopupImage);
-
+  
   //возвращаем готовую карточку
   return newPlaceCard;
-
 }
 
 // 1.Добавление карточек
@@ -243,10 +245,8 @@ function likeCard(el) {
 // 5.Удаление карточки
 
 // напишем функцию удаления карточки
-function deleteCard() {
-  // выберем элемент,который нужно удалить(это родительский элемент кнопки удаления, т.е. сама карточка)
-  const card = this.parentElement; 
-  // удаление элемента
+function deleteCard(actualCard) {
+  const card = actualCard;
   card.remove();
 };
 
@@ -268,9 +268,8 @@ popupImageCloseButton.addEventListener('click', () => {
 
 
 // напишем функцию заполнения попапа информацией из карточки
-function fillingPopupImage() {
-  // укажем в переменной, что карточка - это родительский элемент по отношению к фото
-  const card = this.parentElement;
+function fillingPopupImage(actualCard) {
+  const card = actualCard;
   // выбираем поля карточки, из которых будем передавать информацию в попап
   const nameCard = card.querySelector('.element__title');
   const imageCard = card.querySelector('.element__image');
