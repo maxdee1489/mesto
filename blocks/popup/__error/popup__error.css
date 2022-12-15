@@ -1,0 +1,15 @@
+.popup__error {
+  color:rgba(255, 0, 0, 1);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15px;
+  width: 358px;
+  height: 15px;
+  visibility: hidden;
+  margin: 0 0 13px 0;
+  display: block;
+}
+
+.popup__error:last-of-type {
+  margin: 0;
+}

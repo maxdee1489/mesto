@@ -25,9 +25,28 @@ popupOpenButton.addEventListener('click', () => {
   openPopup(popupEditProfile)
 });
 
+// Напишем функцию закрытия попапа кликом на оверлей
+const closePopupByOverley = function (event, actualPopup) {
+  if (event.target !== event.currentTarget) {
+    return;
+  }
+  closePopup(actualPopup);
+};
+
+// Напишем функцию закрытия попапа нажатием на клавишу Esc
+function closePopupByEsc(event, actualPopup) {
+  const key = event.key;
+  if (key === "Escape") {
+    closePopup(actualPopup);
+  }
+};
+
 // добавим событие - закрытие Popup при клике на кнопку
 popupCloseButton.addEventListener('click',closePopupEditProfile);
-
+// добавим событие - закрытие Popup при клике на оверлей
+popupEditProfile.addEventListener('click', (event) => closePopupByOverley(event, popupEditProfile));
+// добавим событие - закрытие Popup при клике на Esc
+document.addEventListener('keydown', (event) => closePopupByEsc(event, popupEditProfile));
 
 // 2.Значения в полях ввода при открытии Popup
 const profileElement = document.querySelector('.profile');
@@ -201,7 +220,10 @@ addCardPopupOpenButton.addEventListener('click', () => {
 
 // добавим событие - закрытие Popup при клике на кнопку
 addCardPopupCloseButton.addEventListener('click', closeAddCardPopup);
-
+// добавим событие - закрытие Popup при клике на оверлей
+addCardPopup.addEventListener('click', (event) => closePopupByOverley(event, addCardPopup));
+// добавим событие - закрытие Popup при клике на Esc
+document.addEventListener('keydown', (event) => closePopupByEsc(event, addCardPopup));
 
 // 3.Добавление карточки
 
@@ -265,7 +287,10 @@ const placeImagePopupImage = popupImage.querySelector('.popup-image__image');
 popupImageCloseButton.addEventListener('click', () => {
   closePopup(popupImage)
 });
-
+// добавим событие - закрытие Popup при клике на оверлей
+popupImage.addEventListener('click', (event) => closePopupByOverley(event, popupImage));
+// добавим событие - закрытие Popup при клике на Esc
+document.addEventListener('keydown', (event) => closePopupByEsc(event, popupImage));
 
 // напишем функцию заполнения попапа информацией из карточки
 function fillingPopupImage(actualCard) {
@@ -278,7 +303,6 @@ function fillingPopupImage(actualCard) {
   placeImagePopupImage.src = imageCard.src;
   placeImagePopupImage.alt =  nameCard.textContent;  
 };
-
 
 
 

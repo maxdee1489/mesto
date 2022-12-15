@@ -2,14 +2,8 @@
   font-size: 12px;
   line-height: 15px;
   font-weight: 400;
-  margin: 1vh 0 0 12vw;
+  margin: 1vh 0 0 3vw;
   max-width: 291px;
   color: white;
   align-self: flex-start;
-}
-
-@media screen and (max-width: 600px) {
-  .popup-image__title {
-    margin: 1vh 0 0 11vw;  
-  }
 }
