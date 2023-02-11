@@ -1,5 +1,6 @@
 .content__elements {
   margin: 0 200px;
+  min-height: 30vh;
 }
 
 @media screen and (max-width: 1279px) {

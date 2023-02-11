@@ -7,12 +7,16 @@ const popupOpenButton = document.querySelector('.profile__edit-button');
 
 // напишем общую функцию для открытия попапов
 function openPopup(popup) {
-  popup.classList.add('popup_is-opened'); 
+  popup.classList.add('popup_is-opened');
+  // повесим слушатель события - нажатие на клавишу Esc
+  popup.addEventListener('keydown', (event) => closePopupByEsc(event)); 
 };
 
 // напишем общую функцию для закрытия попапов
 function closePopup(popup) {
-  popup.classList.remove('popup_is-opened'); 
+  popup.classList.remove('popup_is-opened');
+  // удалим слушатель события - нажатие на клавишу Esc
+  popup.removeEventListener('keydown', (event) => closePopupByEsc(event)); 
 };
 
 // напишем функцию для закрытия попапа редактирования профиля
@@ -22,7 +26,7 @@ const closePopupEditProfile = function () {
 
 // добавим событие - открытие Popup при клике на кнопку
 popupOpenButton.addEventListener('click', () => {
-  openPopup(popupEditProfile)
+  openPopup(popupEditProfile);
 });
 
 // Напишем функцию закрытия попапа кликом на оверлей
@@ -34,10 +38,12 @@ const closePopupByOverley = function (event, actualPopup) {
 };
 
 // Напишем функцию закрытия попапа нажатием на клавишу Esc
-function closePopupByEsc(event, actualPopup) {
+function closePopupByEsc(event) {
   const key = event.key;
   if (key === "Escape") {
-    closePopup(actualPopup);
+    // найдем DOM-элемент с классом popup_opened и передадим его в функцию закрытия
+    const openedPopup = document.querySelector('.popup_is-opened'); 
+    closePopup(openedPopup);
   }
 };
 
@@ -45,8 +51,7 @@ function closePopupByEsc(event, actualPopup) {
 popupCloseButton.addEventListener('click',closePopupEditProfile);
 // добавим событие - закрытие Popup при клике на оверлей
 popupEditProfile.addEventListener('click', (event) => closePopupByOverley(event, popupEditProfile));
-// добавим событие - закрытие Popup при клике на Esc
-document.addEventListener('keydown', (event) => closePopupByEsc(event, popupEditProfile));
+
 
 // 2.Значения в полях ввода при открытии Popup
 const profileElement = document.querySelector('.profile');
@@ -93,7 +98,7 @@ formEditProfilePopup.addEventListener('submit', submitEditProfileForm);
 // II.Практическая работа №5
 
 // напишем общую функцию для создания карточек из массива и попапа добавления карточек
-function createCard(nameCardValue, imageCardLink, altImageCardValue) {
+function createCard(nameCardValue, imageCardLink) {
   // клонируем содержимое тега Template в переменную
   const newPlaceCard = elementTemplate.querySelector('.element').cloneNode(true);
   // выбираем фреймы карточки для вывода контента
@@ -102,7 +107,7 @@ function createCard(nameCardValue, imageCardLink, altImageCardValue) {
   // Вставляем новые значения
   placeName.textContent = nameCardValue;
   placeImage.src = imageCardLink;
-  placeImage.alt = altImageCardValue;
+  placeImage.alt = nameCardValue;
   // из шаблона выбираем кнопки
   const trashButton = newPlaceCard.querySelector('.element__trash');
   const likeButton = newPlaceCard.querySelector('.element__like-button');
@@ -177,6 +182,7 @@ const initialCards = [
   }
 ];
 
+
 // получаем содержимое тега Template
 const elementTemplate = document.querySelector('#element-template').content;
 // выбираем контейнер, куда будем добавлять карточки
@@ -187,7 +193,7 @@ function createInitialCards() {
   initialCards.forEach(function(el) { 
     
     // передаем значения объектов массива в функцию создания карточек
-    const newCard = createCard(el.name, el.link, el.name);
+    const newCard = createCard(el.name, el.link);
     
     // добавляем в контейнер
     cardsContainer.prepend(newCard);
@@ -215,15 +221,16 @@ const closeAddCardPopup = function () {
 
 // добавим событие - открытие Popup при клике на кнопку
 addCardPopupOpenButton.addEventListener('click', () => {
-  openPopup(addCardPopup)
+  openPopup(addCardPopup);
+  //добавим функцию болкировки кнопки отправки формы при открытом попапе и незаполненных инпутах
+  addSubmitButtonControl();
 });
 
 // добавим событие - закрытие Popup при клике на кнопку
 addCardPopupCloseButton.addEventListener('click', closeAddCardPopup);
 // добавим событие - закрытие Popup при клике на оверлей
 addCardPopup.addEventListener('click', (event) => closePopupByOverley(event, addCardPopup));
-// добавим событие - закрытие Popup при клике на Esc
-document.addEventListener('keydown', (event) => closePopupByEsc(event, addCardPopup));
+
 
 // 3.Добавление карточки
 
@@ -250,6 +257,13 @@ function submitAddCardForm (evt) {
   // очищаем поля  формы после отправки
   formAddCardPopup.reset();
 }
+
+// напишем функцию, которая будет блокировать кнопку отправки формы
+function addSubmitButtonControl() {
+  const button = addCardPopup.querySelector('.popup__save-button');
+  button.setAttribute('disabled', true);
+  button.classList.add('popup__save-button_disabled');
+};
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
@@ -303,8 +317,6 @@ function fillingPopupImage(actualCard) {
   placeImagePopupImage.src = imageCard.src;
   placeImagePopupImage.alt =  nameCard.textContent;  
 };
-
-
 
 
 
