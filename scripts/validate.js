@@ -37,6 +37,7 @@ function checkInputValidity(formElement, inputElement, classes) {
 function setEventListeners(formElement, classes) {
   // Создадим массив из инпутов
   const inputList = Array.from(formElement.querySelectorAll(classes.inputSelector));
+  // деактивируем кнопку при первой загрузке сайта
   addSubmitButtonCondition(formElement, classes);
 
   //для каждого элемента массива установим слушатель
@@ -45,6 +46,12 @@ function setEventListeners(formElement, classes) {
       checkInputValidity(formElement, inputElement, classes);
       addSubmitButtonCondition(formElement, classes);
     });
+  });
+
+  formElement.addEventListener('reset', () => {
+    setTimeout(() => {
+      addSubmitButtonCondition(formElement, classes);
+    }, 0)
   });
 };
 

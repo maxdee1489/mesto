@@ -2,21 +2,21 @@
 
 // 1.Открытие и закрытие Popup
 const popupEditProfile = document.getElementById('editProfile');
-const popupCloseButton = popupEditProfile.querySelector('.popup__close');
-const popupOpenButton = document.querySelector('.profile__edit-button');
+const profileCloseButton = popupEditProfile.querySelector('.popup__close');
+const profileOpenButton = document.querySelector('.profile__edit-button');
 
 // напишем общую функцию для открытия попапов
 function openPopup(popup) {
   popup.classList.add('popup_is-opened');
   // повесим слушатель события - нажатие на клавишу Esc
-  popup.addEventListener('keydown', (event) => closePopupByEsc(event)); 
+  document.addEventListener('keydown', closePopupByEsc); 
 };
 
 // напишем общую функцию для закрытия попапов
 function closePopup(popup) {
   popup.classList.remove('popup_is-opened');
   // удалим слушатель события - нажатие на клавишу Esc
-  popup.removeEventListener('keydown', (event) => closePopupByEsc(event)); 
+  document.removeEventListener('keydown', closePopupByEsc);
 };
 
 // напишем функцию для закрытия попапа редактирования профиля
@@ -25,7 +25,7 @@ const closePopupEditProfile = function () {
 };
 
 // добавим событие - открытие Popup при клике на кнопку
-popupOpenButton.addEventListener('click', () => {
+profileOpenButton.addEventListener('click', () => {
   openPopup(popupEditProfile);
 });
 
@@ -39,8 +39,7 @@ const closePopupByOverley = function (event, actualPopup) {
 
 // Напишем функцию закрытия попапа нажатием на клавишу Esc
 function closePopupByEsc(event) {
-  const key = event.key;
-  if (key === "Escape") {
+  if (event.key === "Escape") {
     // найдем DOM-элемент с классом popup_opened и передадим его в функцию закрытия
     const openedPopup = document.querySelector('.popup_is-opened'); 
     closePopup(openedPopup);
@@ -48,7 +47,7 @@ function closePopupByEsc(event) {
 };
 
 // добавим событие - закрытие Popup при клике на кнопку
-popupCloseButton.addEventListener('click',closePopupEditProfile);
+profileCloseButton.addEventListener('click',closePopupEditProfile);
 // добавим событие - закрытие Popup при клике на оверлей
 popupEditProfile.addEventListener('click', (event) => closePopupByOverley(event, popupEditProfile));
 
@@ -67,12 +66,12 @@ const addInfoInputsProfilePopup = function() {
 };
 
 // настроим запуск функции наполнения полей ввода при нажатии на кнопку открытия попап
-popupOpenButton.addEventListener('click', addInfoInputsProfilePopup);
+profileOpenButton.addEventListener('click', addInfoInputsProfilePopup);
 
 //3.Редактирование имени и информации
 
 // Находим форму в DOM
-const formEditProfilePopup = document.querySelector('.popup__info');
+const formEditProfilePopup = document.forms["editForm"];
 
 // Обработчик «отправки» формы
 function submitEditProfileForm (evt) {
@@ -111,16 +110,15 @@ function createCard(nameCardValue, imageCardLink) {
   // из шаблона выбираем кнопки
   const trashButton = newPlaceCard.querySelector('.element__trash');
   const likeButton = newPlaceCard.querySelector('.element__like-button');
-  const imageCard = newPlaceCard.querySelector('.element__image');
   //добавляем на кнопки и фото слушатели
   trashButton.addEventListener('click', () => {
     deleteCard(newPlaceCard)
   });
   likeButton.addEventListener('click', () => {
-    likeCard(likeButton)
+    toggleLike(likeButton)
   });
   
-  imageCard.addEventListener('click', () => {
+  placeImage.addEventListener('click', () => {
     fillingPopupImage(newPlaceCard);
     openPopup(popupImage);
   });
@@ -222,8 +220,6 @@ const closeAddCardPopup = function () {
 // добавим событие - открытие Popup при клике на кнопку
 addCardPopupOpenButton.addEventListener('click', () => {
   openPopup(addCardPopup);
-  //добавим функцию болкировки кнопки отправки формы при открытом попапе и незаполненных инпутах
-  addSubmitButtonControl();
 });
 
 // добавим событие - закрытие Popup при клике на кнопку
@@ -258,13 +254,6 @@ function submitAddCardForm (evt) {
   formAddCardPopup.reset();
 }
 
-// напишем функцию, которая будет блокировать кнопку отправки формы
-function addSubmitButtonControl() {
-  const button = addCardPopup.querySelector('.popup__save-button');
-  button.setAttribute('disabled', true);
-  button.classList.add('popup__save-button_disabled');
-};
-
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 formAddCardPopup.addEventListener('submit', submitAddCardForm);
@@ -273,7 +262,7 @@ formAddCardPopup.addEventListener('submit', submitAddCardForm);
 // 4.Лайк карточки
 
 // напишем функцию для добавления/удаления лайка при клике на кнопку 
-function likeCard(el) { 
+function toggleLike(el) { 
   el.classList.toggle('element__like-button_enabled');
 };
 
@@ -282,8 +271,7 @@ function likeCard(el) {
 
 // напишем функцию удаления карточки
 function deleteCard(actualCard) {
-  const card = actualCard;
-  card.remove();
+  actualCard.remove();
 };
 
 
@@ -292,7 +280,7 @@ function deleteCard(actualCard) {
 // найдем попап 
 const popupImage = document.getElementById('popupImage');
 // найдем кнопку закрытия попапа
-const popupImageCloseButton = popupImage.querySelector('.popup-image__close');
+const popupImageCloseButton = document.getElementById('popupImageClose');
 // выбираем фреймы попапа, в которые будем передавать информацию из карточки
 const placeNamePopupImage = popupImage.querySelector('.popup-image__title');
 const placeImagePopupImage = popupImage.querySelector('.popup-image__image');
@@ -303,8 +291,6 @@ popupImageCloseButton.addEventListener('click', () => {
 });
 // добавим событие - закрытие Popup при клике на оверлей
 popupImage.addEventListener('click', (event) => closePopupByOverley(event, popupImage));
-// добавим событие - закрытие Popup при клике на Esc
-document.addEventListener('keydown', (event) => closePopupByEsc(event, popupImage));
 
 // напишем функцию заполнения попапа информацией из карточки
 function fillingPopupImage(actualCard) {
