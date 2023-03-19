@@ -1,3 +1,59 @@
+import { Card } from './Cards.js';
+import { FormValidator, formClasses } from './FormValidator.js';
+
+
+const initialCards = [
+  {
+    name: 'Карачаевск',
+    link: "./images/kirill-pershin-1088404-unsplash.jpg"
+  },
+  {
+    name: 'Гора Эльбрус',
+    link: "./images/kirill-pershin-1404681-unsplash.jpg"
+  },
+  {
+    name: 'Домбай',
+    link: "./images/kirill-pershin-1556355-unsplash.jpg"
+  },
+  {
+    name: 'Гора Эльбрус',
+    link: "./images/kirill-pershin-1404681-unsplash.jpg"
+  },
+  {
+    name: 'Домбай',
+    link: "./images/kirill-pershin-1556355-unsplash.jpg"
+  },
+  {
+    name: 'Карачаево-Черкесия',
+    link: "./images/kirill-pershin-1088404-unsplash.jpg"
+  },
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
+
 // I.Popup редактирования профиля
 
 // 1.Открытие и закрытие Popup
@@ -96,113 +152,8 @@ formEditProfilePopup.addEventListener('submit', submitEditProfileForm);
 
 // II.Практическая работа №5
 
-// напишем общую функцию для создания карточек из массива и попапа добавления карточек
-function createCard(nameCardValue, imageCardLink) {
-  // клонируем содержимое тега Template в переменную
-  const newPlaceCard = elementTemplate.querySelector('.element').cloneNode(true);
-  // выбираем фреймы карточки для вывода контента
-  const placeName = newPlaceCard.querySelector('.element__title');
-  const placeImage = newPlaceCard.querySelector('.element__image');
-  // Вставляем новые значения
-  placeName.textContent = nameCardValue;
-  placeImage.src = imageCardLink;
-  placeImage.alt = nameCardValue;
-  // из шаблона выбираем кнопки
-  const trashButton = newPlaceCard.querySelector('.element__trash');
-  const likeButton = newPlaceCard.querySelector('.element__like-button');
-  //добавляем на кнопки и фото слушатели
-  trashButton.addEventListener('click', () => {
-    deleteCard(newPlaceCard)
-  });
-  likeButton.addEventListener('click', () => {
-    toggleLike(likeButton)
-  });
-  
-  placeImage.addEventListener('click', () => {
-    fillingPopupImage(newPlaceCard);
-    openPopup(popupImage);
-  });
-  
-  //возвращаем готовую карточку
-  return newPlaceCard;
-}
 
-// 1.Добавление карточек
-
-const initialCards = [
-  {
-    name: 'Карачаевск',
-    link: "./images/kirill-pershin-1088404-unsplash.jpg"
-  },
-  {
-    name: 'Гора Эльбрус',
-    link: "./images/kirill-pershin-1404681-unsplash.jpg"
-  },
-  {
-    name: 'Домбай',
-    link: "./images/kirill-pershin-1556355-unsplash.jpg"
-  },
-  {
-    name: 'Гора Эльбрус',
-    link: "./images/kirill-pershin-1404681-unsplash.jpg"
-  },
-  {
-    name: 'Домбай',
-    link: "./images/kirill-pershin-1556355-unsplash.jpg"
-  },
-  {
-    name: 'Карачаево-Черкесия',
-    link: "./images/kirill-pershin-1088404-unsplash.jpg"
-  },
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
-
-// получаем содержимое тега Template
-const elementTemplate = document.querySelector('#element-template').content;
-// выбираем контейнер, куда будем добавлять карточки
-const cardsContainer = document.querySelector('.elements');
-
-// напишем функцию для создания,наполнения карточек и добавления их в контейнер 
-function createInitialCards() {
-  initialCards.forEach(function(el) { 
-    
-    // передаем значения объектов массива в функцию создания карточек
-    const newCard = createCard(el.name, el.link);
-    
-    // добавляем в контейнер
-    cardsContainer.prepend(newCard);
-  });
-};
-
-// отображаем на странице
-createInitialCards();
-
-
-// 2.Открытие и закрытие формы добавления карточек
+// 1.Открытие и закрытие формы добавления карточек
 
 // выбираем нужный Popup
 const addCardPopup = document.getElementById('addCard');
@@ -228,7 +179,7 @@ addCardPopupCloseButton.addEventListener('click', closeAddCardPopup);
 addCardPopup.addEventListener('click', (event) => closePopupByOverley(event, addCardPopup));
 
 
-// 3.Добавление карточки
+// 2.Добавление карточки
 
 // Находим форму в DOM
 const formAddCardPopup = addCardPopup.querySelector('.popup__info');
@@ -237,12 +188,17 @@ const formAddCardPopup = addCardPopup.querySelector('.popup__info');
 const placeInput = document.getElementById('placeName');
 const imageInput = document.getElementById('placeImage');
 
+// выбираем контейнер, куда будем добавлять карточки
+const cardsContainer = document.querySelector('.elements');
+
 // Обработчик «отправки» формы
 function submitAddCardForm (evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
 
-  // передаем значения из полей формы добавления карточек в функцию создания карточек
-  const newCard = createCard(placeInput.value, imageInput.value, placeInput.value);
+  // передаем значения из полей формы добавления карточек в класс создания карточек
+  const newPlace = new Card(placeInput.value, imageInput.value, '#element-template', fillingPopupImage, openPopup, popupImage, closePopup, popupImageCloseButton, closePopupByOverley);
+  const newCard = newPlace.generateCard();
+
 
   // добавляем в контейнер
   cardsContainer.prepend(newCard);
@@ -259,23 +215,7 @@ function submitAddCardForm (evt) {
 formAddCardPopup.addEventListener('submit', submitAddCardForm);
 
 
-// 4.Лайк карточки
-
-// напишем функцию для добавления/удаления лайка при клике на кнопку 
-function toggleLike(el) { 
-  el.classList.toggle('element__like-button_enabled');
-};
-
-
-// 5.Удаление карточки
-
-// напишем функцию удаления карточки
-function deleteCard(actualCard) {
-  actualCard.remove();
-};
-
-
-// 6.Открытие попапа с картинкой
+// 3.Открытие попапа с картинкой
 
 // найдем попап 
 const popupImage = document.getElementById('popupImage');
@@ -285,12 +225,6 @@ const popupImageCloseButton = document.getElementById('popupImageClose');
 const placeNamePopupImage = popupImage.querySelector('.popup-image__title');
 const placeImagePopupImage = popupImage.querySelector('.popup-image__image');
 
-// добавим событие - клик по кнопке закрытия
-popupImageCloseButton.addEventListener('click', () => {
-  closePopup(popupImage)
-});
-// добавим событие - закрытие Popup при клике на оверлей
-popupImage.addEventListener('click', (event) => closePopupByOverley(event, popupImage));
 
 // напишем функцию заполнения попапа информацией из карточки
 function fillingPopupImage(actualCard) {
@@ -305,30 +239,23 @@ function fillingPopupImage(actualCard) {
 };
 
 
+// 4.Опубликуем карточки из массива
+initialCards.forEach((el) => {
+  const card = new Card(el.name, el.link, '#element-template', fillingPopupImage, openPopup, popupImage, closePopup, popupImageCloseButton, closePopupByOverley);
+  const cardElement = card.generateCard();
+  // Добавляем в DOM
+  document.querySelector('.elements').prepend(cardElement);
+});
 
 
+// 5.Напишем общую функцию для запуска валидации форм
+function startFormValidation (actualForm) {
+  const formPopupValidate = new FormValidator(formClasses, actualForm);
+  formPopupValidate.enableValidation();
+}
 
+// включим валидацию для формы добавления карточек
+startFormValidation(formAddCardPopup);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// включим валидацию для формы редактирования профиля
+startFormValidation(formEditProfilePopup);
