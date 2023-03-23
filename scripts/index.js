@@ -195,10 +195,8 @@ const cardsContainer = document.querySelector('.elements');
 function submitAddCardForm (evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
 
-  // передаем значения из полей формы добавления карточек в класс создания карточек
-  const newPlace = new Card(placeInput.value, imageInput.value, '#element-template', fillingPopupImage, openPopup, popupImage, closePopup, popupImageCloseButton, closePopupByOverley);
-  const newCard = newPlace.generateCard();
-
+  // передаем значения из полей формы добавления карточек в функцию создания карточек
+  const newCard = createCard(placeInput.value, imageInput.value);
 
   // добавляем в контейнер
   cardsContainer.prepend(newCard);
@@ -225,30 +223,42 @@ const popupImageCloseButton = document.getElementById('popupImageClose');
 const placeNamePopupImage = popupImage.querySelector('.popup-image__title');
 const placeImagePopupImage = popupImage.querySelector('.popup-image__image');
 
+// добавим событие - клик по кнопке закрытия
+popupImageCloseButton.addEventListener('click', () => {
+  closePopup(popupImage)
+});
+// добавим событие - закрытие Popup при клике на оверлей
+popupImage.addEventListener('click', (event) => closePopupByOverley(event, popupImage));
 
 // напишем функцию заполнения попапа информацией из карточки
-function fillingPopupImage(actualCard) {
-  const card = actualCard;
-  // выбираем поля карточки, из которых будем передавать информацию в попап
-  const nameCard = card.querySelector('.element__title');
-  const imageCard = card.querySelector('.element__image');
-  // вставляем новые значения с помощью textContent и src
-  placeNamePopupImage.textContent = nameCard.textContent;
-  placeImagePopupImage.src = imageCard.src;
-  placeImagePopupImage.alt =  nameCard.textContent;  
-};
+function handleCardClick(name, link) {
+  placeNamePopupImage.textContent = name;
+  placeImagePopupImage.src = link;
+  placeImagePopupImage.alt =  name;
+
+  openPopup(popupImage);
+}
+
+// напишем функцию создания карточки с использованием класса Card
+function createCard (name, link) {
+  const card = new Card(name, link, '#element-template', handleCardClick);
+  const cardElement = card.generateCard();
+
+  return cardElement
+}
 
 
 // 4.Опубликуем карточки из массива
+
 initialCards.forEach((el) => {
-  const card = new Card(el.name, el.link, '#element-template', fillingPopupImage, openPopup, popupImage, closePopup, popupImageCloseButton, closePopupByOverley);
-  const cardElement = card.generateCard();
+  const cardElement = createCard(el.name, el.link);
   // Добавляем в DOM
-  document.querySelector('.elements').prepend(cardElement);
+  cardsContainer.prepend(cardElement);
 });
 
 
 // 5.Напишем общую функцию для запуска валидации форм
+
 function startFormValidation (actualForm) {
   const formPopupValidate = new FormValidator(formClasses, actualForm);
   formPopupValidate.enableValidation();
